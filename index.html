@@ -9,13 +9,110 @@
 
 <style>
 * {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body {background: linear-gradient(135deg, #0a2a66, #1e4db7); color:white;}
-.container {max-width:500px;margin:auto;padding:20px;}
-.card {background:white;color:#222;border-radius:14px;padding:18px;margin-top:18px;}
-.btn {margin-top:12px;padding:14px;width:100%;background:linear-gradient(45deg,#ff6b00,#ff9a3c);border:none;color:white;border-radius:10px;cursor:pointer;}
-.progress {height:6px;background:#ddd;border-radius:10px;margin-top:8px;}
-.progress-bar {height:100%;background:#ff6b00;width:0%;}
-.cta-box {background:linear-gradient(135deg,#ff6b00,#ff9a3c);color:white;padding:15px;border-radius:12px;margin-top:12px;text-align:center;}
+
+body {
+  background: linear-gradient(135deg, #0a2a66, #1e4db7);
+  color: white;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  color: #222;
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.hero h1 { font-size: 26px; }
+.hero p { margin-top: 10px; }
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  margin-top: 12px;
+  padding: 14px;
+  width: 100%;
+  background: linear-gradient(45deg, #ff6b00, #ff9a3c);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.quiz-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  color: #222;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.progress {
+  height: 6px;
+  background: #ddd;
+  border-radius: 10px;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: #ff6b00;
+  width: 0%;
+}
+
+.question-card {
+  background: #f9fbff;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+
+.option {display:block;margin-top:8px;cursor:pointer;}
+
+.cta-box {
+  background: linear-gradient(135deg,#ff6b00,#ff9a3c);
+  color:white;
+  padding:15px;
+  border-radius:12px;
+  margin-top:12px;
+  text-align:center;
+}
+
+.whatsapp {
+  position: fixed;
+  bottom: 70px;
+  right: 15px;
+  background: #25D366;
+  padding: 12px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.sticky {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ff6b00;
+  text-align: center;
+  padding: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
 </style>
 </head>
 
@@ -23,78 +120,82 @@ body {background: linear-gradient(135deg, #0a2a66, #1e4db7); color:white;}
 
 <div class="container">
 
+<div class="hero">
+  <h1>Not clearing UPSC? Let’s fix it.</h1>
+  <p>Get your personalized UPSC strategy in 10 minutes – FREE</p>
+</div>
+
 <div class="card">
 <form id="form">
-  <input type="text" id="name" placeholder="Your Name" required><br>
-  <select id="attempt" required>
+  <input type="text" id="name" placeholder="Your Name" required>
+  <select required>
     <option value="">Select Attempt</option>
     <option>2026</option>
     <option>2027</option>
     <option>Beginner</option>
-  </select><br>
-  <input type="text" id="optional" placeholder="Optional Subject">
+  </select>
+  <input type="text" placeholder="Optional Subject">
   <button class="btn">TAKE QUIZ</button>
 </form>
 </div>
 
 </div>
 
+<div class="whatsapp" onclick="goWhatsApp()">Chat</div>
+<div class="sticky" onclick="goWhatsApp()">Book Free Strategy Session</div>
+
 <script>
 
-// 🔥 LARGE QUESTION BANK
+// QUESTION BANK
 const questionBank = [
-  {q:"Amber Box relates to?", options:["SAARC","WTO","UN"], ans:1},
-  {q:"MUDRA Yojana is for?", options:["Farmers","Small business","Students"], ans:1},
-  {q:"Repo rate set by?", options:["Govt","RBI","IMF"], ans:1},
-  {q:"GDP measures?", options:["Production","Happiness","Population"], ans:0},
-  {q:"Article 32?", options:["Remedy","Tax","Election"], ans:0},
-  {q:"NITI Aayog replaced?", options:["Planning Commission","Finance Commission","RBI"], ans:0},
-  {q:"Fiscal deficit means?", options:["Revenue gap","Borrowing gap","Tax gap"], ans:1},
-  {q:"Green Revolution crop?", options:["Rice","Wheat","Cotton"], ans:1},
-  {q:"Fundamental Duties added by?", options:["42nd Amendment","44th","52nd"], ans:0},
-  {q:"Who appoints CAG?", options:["PM","President","Parliament"], ans:1}
+ {q:"Amber Box relates to?", options:["SAARC","WTO","UN"], ans:1},
+ {q:"Repo rate set by?", options:["Govt","RBI","IMF"], ans:1},
+ {q:"GDP measures?", options:["Production","Happiness","Population"], ans:0},
+ {q:"Article 32?", options:["Remedy","Tax","Election"], ans:0},
+ {q:"NITI Aayog replaced?", options:["Planning Commission","Finance Commission","RBI"], ans:0},
+ {q:"Green Revolution crop?", options:["Rice","Wheat","Cotton"], ans:1},
+ {q:"CAG appointed by?", options:["PM","President","SC"], ans:1},
+ {q:"Fiscal deficit?", options:["Gap","Tax","Loan"], ans:0}
 ];
 
 let quiz = [];
 let time = 120;
 let userDistance = "";
 
-// 🎯 Shuffle & pick random 5 questions
+// RANDOM QUIZ
 function generateQuiz(){
-  let shuffled = questionBank.sort(()=>0.5 - Math.random());
-  quiz = shuffled.slice(0,5);
+  quiz = [...questionBank].sort(()=>0.5-Math.random()).slice(0,5);
 }
 
-// 📍 LOCATION DETECTION
+// LOCATION
 function getLocation(){
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(pos=>{
-      let userLat = pos.coords.latitude;
-      let userLon = pos.coords.longitude;
-
-      let centerLat = 28.710404;
-      let centerLon = 77.205877;
-
-      userDistance = getDistance(userLat,userLon,centerLat,centerLon);
+      userDistance = getDistance(
+        pos.coords.latitude,
+        pos.coords.longitude,
+        28.710404,
+        77.205877
+      );
     });
   }
 }
 
-// 📏 DISTANCE FORMULA (Haversine)
+// DISTANCE
 function getDistance(lat1, lon1, lat2, lon2){
-  let R = 6371;
-  let dLat = (lat2-lat1)*Math.PI/180;
-  let dLon = (lon2-lon1)*Math.PI/180;
-  let a = Math.sin(dLat/2)**2 +
-          Math.cos(lat1*Math.PI/180) *
-          Math.cos(lat2*Math.PI/180) *
-          Math.sin(dLon/2)**2;
-
-  let c = 2*Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  let R=6371;
+  let dLat=(lat2-lat1)*Math.PI/180;
+  let dLon=(lon2-lon1)*Math.PI/180;
+  let a=Math.sin(dLat/2)**2 +
+        Math.cos(lat1*Math.PI/180) *
+        Math.cos(lat2*Math.PI/180) *
+        Math.sin(dLon/2)**2;
+  let c=2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
   return (R*c).toFixed(1);
 }
 
-document.getElementById("form").addEventListener("submit", function(e){
+// START QUIZ
+document.getElementById("form").addEventListener("submit", e=>{
   e.preventDefault();
   generateQuiz();
   getLocation();
@@ -102,71 +203,81 @@ document.getElementById("form").addEventListener("submit", function(e){
 });
 
 function startQuiz(){
-  document.querySelector(".card").innerHTML = `
-    <h3>🧠 UPSC Mini Test</h3>
-    <p id="timer">Time: 120s</p>
-    <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+  document.querySelector(".card").innerHTML=`
+    <div class="quiz-header">
+      <h3>UPSC Test</h3>
+      <p id="timer">120s</p>
+      <div class="progress"><div class="progress-bar" id="bar"></div></div>
+    </div>
     <form id="quizForm"></form>
     <button class="btn" onclick="submitQuiz()">Submit</button>
   `;
 
-  const form = document.getElementById("quizForm");
+  let form=document.getElementById("quizForm");
 
-  quiz.forEach((item,i)=>{
-    let html = `<p><b>Q${i+1}. ${item.q}</b></p>`;
-    item.options.forEach((opt,j)=>{
-      html += `<label><input type="radio" name="q${i}" value="${j}" onchange="updateProgress()"> ${opt}</label><br>`;
+  quiz.forEach((q,i)=>{
+    let html=`<div class="question-card"><b>${q.q}</b>`;
+    q.options.forEach((opt,j)=>{
+      html+=`<label class="option">
+      <input type="radio" name="q${i}" value="${j}" onchange="progress()"> ${opt}
+      </label>`;
     });
-    form.innerHTML += html;
+    html+=`</div>`;
+    form.innerHTML+=html;
   });
 
   startTimer();
 }
 
-function updateProgress(){
-  let answered = document.querySelectorAll('input:checked').length;
-  document.getElementById("progressBar").style.width = (answered/quiz.length)*100 + "%";
+// PROGRESS
+function progress(){
+  let answered=document.querySelectorAll("input:checked").length;
+  document.getElementById("bar").style.width=(answered/quiz.length)*100+"%";
 }
 
+// TIMER
 function startTimer(){
-  let timer = setInterval(()=>{
+  let t=setInterval(()=>{
     time--;
-    document.getElementById("timer").innerText = "Time: "+time+"s";
-    if(time<=0){
-      clearInterval(timer);
-      submitQuiz();
-    }
+    document.getElementById("timer").innerText=time+"s";
+    if(time<=0){clearInterval(t);submitQuiz();}
   },1000);
 }
 
+// RESULT
 function submitQuiz(){
-  let score = 0;
+  let score=0;
 
   quiz.forEach((q,i)=>{
-    let ans = document.querySelector(`input[name="q${i}"]:checked`);
-    if(ans && parseInt(ans.value) === q.ans) score++;
+    let a=document.querySelector(`input[name="q${i}"]:checked`);
+    if(a && +a.value===q.ans) score++;
   });
 
-  document.querySelector(".card").innerHTML = `
+  document.querySelector(".card").innerHTML=`
     <h3>Your Score: ${score}/${quiz.length}</h3>
 
     <div class="cta-box">
       📍 You are ${userDistance || "near"} km away<br>
-      🎯 Visit Today - Limited Slots<br><br>
+      🎯 Visit Today<br>
       <button class="btn" onclick="openMap()">Get Directions</button>
     </div>
 
-    <div style="margin-top:15px;border-radius:12px;overflow:hidden;">
-      <iframe 
-        src="https://www.google.com/maps?q=28.710404,77.205877&z=15&output=embed"
-        width="100%" height="250" style="border:0;" loading="lazy">
-      </iframe>
-    </div>
+    <iframe 
+      src="https://www.google.com/maps?q=28.710404,77.205877&z=15&output=embed"
+      width="100%" height="250" style="border:0;margin-top:10px;">
+    </iframe>
   `;
 }
 
+// MAP
 function openMap(){
-  window.open("https://www.google.com/maps?q=28.710404,77.205877","_blank");
+  window.open("https://www.google.com/maps?q=28.710404,77.205877");
+}
+
+// WHATSAPP
+function goWhatsApp(){
+  let name=document.getElementById("name")?.value || "Student";
+  window.open(`https://wa.me/917011440811?text=Hi I completed the quiz. Name: ${name}`);
 }
 
 </script>
