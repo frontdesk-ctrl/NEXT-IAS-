@@ -8,7 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* {margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
 
 body {
   background: linear-gradient(135deg, #0a2a66, #1e4db7);
@@ -24,14 +29,19 @@ body {
 .card {
   background: white;
   color: #222;
-  border-radius: 14px;
-  padding: 18px;
+  border-radius: 16px;
+  padding: 20px;
   margin-top: 18px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
 }
 
-.hero h1 { font-size: 26px; }
-.hero p { margin-top: 10px; }
+.hero h1 {
+  font-size: 26px;
+}
+
+.hero p {
+  margin-top: 10px;
+}
 
 input, select {
   width: 100%;
@@ -42,7 +52,7 @@ input, select {
 }
 
 .btn {
-  margin-top: 12px;
+  margin-top: 14px;
   padding: 14px;
   width: 100%;
   background: linear-gradient(45deg, #ff6b00, #ff9a3c);
@@ -50,68 +60,95 @@ input, select {
   color: white;
   border-radius: 10px;
   cursor: pointer;
+  font-weight: 600;
 }
 
+/* QUIZ HEADER */
 .quiz-header {
-  position: sticky;
-  top: 0;
   background: #fff;
   color: #222;
   padding: 12px;
-  border-radius: 10px;
-  margin-bottom: 10px;
+  border-radius: 12px;
+  margin-bottom: 12px;
 }
 
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#timer {
+  color: #ff6b00;
+  font-weight: 600;
+}
+
+/* PROGRESS */
 .progress {
   height: 6px;
-  background: #ddd;
+  background: #eee;
   border-radius: 10px;
   margin-top: 8px;
 }
 
 .progress-bar {
   height: 100%;
-  background: #ff6b00;
+  background: linear-gradient(45deg, #ff6b00, #ff9a3c);
   width: 0%;
 }
 
+/* QUESTION CARD */
 .question-card {
-  background: #f9fbff;
-  padding: 15px;
-  border-radius: 12px;
-  margin-top: 12px;
+  background: #f8faff;
+  padding: 16px;
+  border-radius: 14px;
+  margin-top: 14px;
+  border: 1px solid #e5ebff;
 }
 
-.option {display:block;margin-top:8px;cursor:pointer;}
+.question-title {
+  font-weight: 600;
+  margin-bottom: 10px;
+}
 
+/* OPTIONS */
+.option {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-top: 8px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.option:hover {
+  background: #eef3ff;
+}
+
+.option input {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.option.selected {
+  background: #e6ecff;
+  border-color: #1e4db7;
+}
+
+/* CTA */
 .cta-box {
-  background: linear-gradient(135deg,#ff6b00,#ff9a3c);
-  color:white;
-  padding:15px;
-  border-radius:12px;
-  margin-top:12px;
-  text-align:center;
-}
-
-.whatsapp {
-  position: fixed;
-  bottom: 70px;
-  right: 15px;
-  background: #25D366;
-  padding: 12px 16px;
-  border-radius: 50px;
-  cursor: pointer;
-}
-
-.sticky {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  background: #ff6b00;
+  background: linear-gradient(135deg, #ff6b00, #ff9a3c);
+  color: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin-top: 14px;
   text-align: center;
-  padding: 14px;
-  font-weight: bold;
-  cursor: pointer;
+}
+
+iframe {
+  border-radius: 12px;
 }
 </style>
 </head>
@@ -141,28 +178,22 @@ input, select {
 
 </div>
 
-<div class="whatsapp" onclick="goWhatsApp()">Chat</div>
-<div class="sticky" onclick="goWhatsApp()">Book Free Strategy Session</div>
-
 <script>
 
 // QUESTION BANK
 const questionBank = [
- {q:"Amber Box relates to?", options:["SAARC","WTO","UN"], ans:1},
+ {q:"Green Revolution crop?", options:["Rice","Wheat","Cotton"], ans:1},
+ {q:"NITI Aayog replaced?", options:["Planning Commission","Finance Commission","RBI"], ans:0},
  {q:"Repo rate set by?", options:["Govt","RBI","IMF"], ans:1},
  {q:"GDP measures?", options:["Production","Happiness","Population"], ans:0},
- {q:"Article 32?", options:["Remedy","Tax","Election"], ans:0},
- {q:"NITI Aayog replaced?", options:["Planning Commission","Finance Commission","RBI"], ans:0},
- {q:"Green Revolution crop?", options:["Rice","Wheat","Cotton"], ans:1},
- {q:"CAG appointed by?", options:["PM","President","SC"], ans:1},
- {q:"Fiscal deficit?", options:["Gap","Tax","Loan"], ans:0}
+ {q:"Article 32?", options:["Remedy","Tax","Election"], ans:0}
 ];
 
 let quiz = [];
 let time = 120;
 let userDistance = "";
 
-// RANDOM QUIZ
+// RANDOM QUESTIONS
 function generateQuiz(){
   quiz = [...questionBank].sort(()=>0.5-Math.random()).slice(0,5);
 }
@@ -181,7 +212,6 @@ function getLocation(){
   }
 }
 
-// DISTANCE
 function getDistance(lat1, lon1, lat2, lon2){
   let R=6371;
   let dLat=(lat2-lat1)*Math.PI/180;
@@ -194,7 +224,7 @@ function getDistance(lat1, lon1, lat2, lon2){
   return (R*c).toFixed(1);
 }
 
-// START QUIZ
+// START
 document.getElementById("form").addEventListener("submit", e=>{
   e.preventDefault();
   generateQuiz();
@@ -205,8 +235,10 @@ document.getElementById("form").addEventListener("submit", e=>{
 function startQuiz(){
   document.querySelector(".card").innerHTML=`
     <div class="quiz-header">
-      <h3>UPSC Test</h3>
-      <p id="timer">120s</p>
+      <div class="header-row">
+        <h3>UPSC Test</h3>
+        <span id="timer">120s</span>
+      </div>
       <div class="progress"><div class="progress-bar" id="bar"></div></div>
     </div>
     <form id="quizForm"></form>
@@ -216,12 +248,18 @@ function startQuiz(){
   let form=document.getElementById("quizForm");
 
   quiz.forEach((q,i)=>{
-    let html=`<div class="question-card"><b>${q.q}</b>`;
+    let html=`<div class="question-card">
+      <div class="question-title">Q${i+1}. ${q.q}</div>`;
+
     q.options.forEach((opt,j)=>{
-      html+=`<label class="option">
-      <input type="radio" name="q${i}" value="${j}" onchange="progress()"> ${opt}
-      </label>`;
+      html+=`
+        <label class="option">
+          <input type="radio" name="q${i}" value="${j}" onclick="selectOption(this)">
+          ${opt}
+        </label>
+      `;
     });
+
     html+=`</div>`;
     form.innerHTML+=html;
   });
@@ -229,8 +267,18 @@ function startQuiz(){
   startTimer();
 }
 
+// OPTION SELECT STYLE
+function selectOption(el){
+  let group = el.name;
+  document.querySelectorAll(`input[name="${group}"]`).forEach(i=>{
+    i.parentElement.classList.remove("selected");
+  });
+  el.parentElement.classList.add("selected");
+  updateProgress();
+}
+
 // PROGRESS
-function progress(){
+function updateProgress(){
   let answered=document.querySelectorAll("input:checked").length;
   document.getElementById("bar").style.width=(answered/quiz.length)*100+"%";
 }
@@ -264,7 +312,7 @@ function submitQuiz(){
 
     <iframe 
       src="https://www.google.com/maps?q=28.710404,77.205877&z=15&output=embed"
-      width="100%" height="250" style="border:0;margin-top:10px;">
+      width="100%" height="250" style="margin-top:10px;">
     </iframe>
   `;
 }
@@ -272,12 +320,6 @@ function submitQuiz(){
 // MAP
 function openMap(){
   window.open("https://www.google.com/maps?q=28.710404,77.205877");
-}
-
-// WHATSAPP
-function goWhatsApp(){
-  let name=document.getElementById("name")?.value || "Student";
-  window.open(`https://wa.me/917011440811?text=Hi I completed the quiz. Name: ${name}`);
 }
 
 </script>
