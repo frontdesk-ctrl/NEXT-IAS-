@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UPSC Strategy Session</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0a2a66, #1e4db7);
+  color: white;
+}
+
+.container {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+}
+
+.fade-in {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero h1 {
+  font-size: 26px;
+}
+
+.hero p {
+  margin-top: 10px;
+}
+
+.card {
+  background: white;
+  color: #222;
+  border-radius: 14px;
+  padding: 18px;
+  margin-top: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.btn {
+  margin-top: 12px;
+  padding: 14px;
+  width: 100%;
+  background: linear-gradient(45deg, #ff6b00, #ff9a3c);
+  border: none;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+/* QUIZ HEADER */
+.quiz-header {
+  position: sticky;
+  top: 0;
+  background: #ffffff;
+  color: #222;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  z-index: 10;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+#timer {
+  font-weight: 600;
+  color: #ff6b00;
+}
+
+/* QUESTION CARD */
+.question-card {
+  background: #f9fbff;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 12px;
+  border: 1px solid #e3e8ff;
+}
+
+.option {
+  display: block;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.option:hover {
+  background: #eef3ff;
+}
+
+.option input {
+  display: none;
+}
+
+.option input:checked + span {
+  font-weight: 600;
+  color: #1e4db7;
+}
+
+.option input:checked + span::before {
+  content: "✔ ";
+}
+
+/* PROGRESS */
+.progress {
+  height: 6px;
+  background: #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(45deg, #ff6b00, #ff9a3c);
+  width: 0%;
+  transition: 0.3s;
+}
+
+.cta-box {
+  background: linear-gradient(135deg, #ff6b00, #ff9a3c);
+  color: white;
+  padding: 15px;
+  border-radius: 12px;
+  margin-top: 12px;
+  text-align: center;
+}
+
+.sticky {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ff6b00;
+  text-align: center;
+  padding: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.whatsapp {
+  position: fixed;
+  bottom: 70px;
+  right: 15px;
+  background: #25D366;
+  padding: 12px 16px;
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.badge {
+  background: rgba(255,255,255,0.2);
+  padding: 6px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  display: inline-block;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="hero fade-in">
+  <h1>Not clearing UPSC? Let’s fix it.</h1>
+  <p>Get your personalized UPSC strategy in 10 minutes – FREE</p>
+  <div class="badge">🔥 83+ students analysed this week</div>
+</div>
+
+<div class="card fade-in">
+<form id="form">
+  <input type="text" id="name" placeholder="Your Name" required>
+  <select id="attempt" required>
+    <option value="">Select Attempt</option>
+    <option>2026</option>
+    <option>2027</option>
+    <option>Beginner</option>
+  </select>
+  <input type="text" id="optional" placeholder="Optional Subject">
+  <button class="btn">TAKE QUIZ</button>
+</form>
+</div>
+
+</div>
+
+<div class="whatsapp" onclick="goWhatsApp()">Chat</div>
+<div class="sticky" onclick="goWhatsApp()">Book Free Strategy Session</div>
+
+<script>
+const quiz = [
+  {q:"Amber Box relates to?", options:["SAARC","WTO","UN"], ans:1},
+  {q:"MUDRA Yojana is for?", options:["Farmers","Small business","Students"], ans:1},
+  {q:"Repo rate set by?", options:["Govt","RBI","IMF"], ans:1},
+  {q:"GDP measures?", options:["Production","Happiness","Population"], ans:0},
+  {q:"Article 32?", options:["Remedy","Tax","Election"], ans:0}
+];
+
+let time = 120;
+let timerInterval;
+
+document.getElementById("form").addEventListener("submit", function(e){
+  e.preventDefault();
+  startQuiz();
+});
+
+function startQuiz(){
+  const container = document.querySelector(".card");
+
+  container.innerHTML = `
+    <div class="quiz-header">
+      <h3>🧠 UPSC Mini Test</h3>
+      <p id="timer">Time: 120s</p>
+      <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+    <form id="quizForm"></form>
+    <button class="btn" onclick="submitQuiz()">Submit Test</button>
+  `;
+
+  const form = document.getElementById("quizForm");
+
+  quiz.forEach((item, i)=>{
+    let qHTML = `<div class="question-card"><b>Q${i+1}. ${item.q}</b>`;
+    item.options.forEach((opt,j)=>{
+      qHTML += `
+        <label class="option">
+          <input type="radio" name="q${i}" value="${j}" onchange="updateProgress()">
+          <span>${opt}</span>
+        </label>
+      `;
+    });
+    qHTML += `</div>`;
+    form.innerHTML += qHTML;
+  });
+
+  startTimer();
+}
+
+function updateProgress(){
+  let total = quiz.length;
+  let answered = document.querySelectorAll('input:checked').length;
+  let percent = (answered / total) * 100;
+  document.getElementById("progressBar").style.width = percent + "%";
+}
+
+function startTimer(){
+  timerInterval = setInterval(()=>{
+    time--;
+    document.getElementById("timer").innerText = "Time: " + time + "s";
+    if(time<=0){
+      clearInterval(timerInterval);
+      submitQuiz();
+    }
+  },1000);
+}
+
+function submitQuiz(){
+  clearInterval(timerInterval);
+  let score = 0;
+
+  quiz.forEach((q,i)=>{
+    let ans = document.querySelector(`input[name="q${i}"]:checked`);
+    if(ans && parseInt(ans.value) === q.ans) score++;
+  });
+
+  document.querySelector(".card").innerHTML = `
+    <h3>Your Score: ${score}/${quiz.length}</h3>
+    <div class="cta-box">
+      📍 2 min from center<br>
+      ⏰ Visit Today<br><br>
+      <button class="btn" onclick="goWhatsApp()">Get Full Strategy</button>
+    </div>
+  `;
+}
+
+function goWhatsApp() {
+  let name = document.getElementById("name")?.value || "Student";
+  let msg = encodeURIComponent("Hi, I completed the UPSC quiz. My name is " + name);
+  window.open("https://wa.me/917011440811?text=" + msg, "_blank");
+}
+</script>
+
+</body>
+</html>
